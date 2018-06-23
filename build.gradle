@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group 'com.github.matsluni'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'com.github.matsluni', name: 'aws-spi-akka-http_2.12', version: '0.0.1-SNAPSHOT'
+    testCompile group: 'org.elasticmq', name: 'elasticmq-server_2.12', version: '0.13.9'
+    testCompile('software.amazon.awssdk:sqs:2.0.0-preview-10'){
+        exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
+    }
+}
