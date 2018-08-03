@@ -1,24 +1,22 @@
 package com.github.matsluni.akkahttpspiexample;
 
-import com.github.matsluni.akkahttpspi.AkkaHttpAsyncHttpService;
+import static org.junit.Assert.assertEquals;
+
+import java.net.URI;
+
 import org.elasticmq.rest.sqs.SQSRestServer;
 import org.elasticmq.rest.sqs.SQSRestServerBuilder;
 import org.junit.Test;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import com.github.matsluni.akkahttpspi.AkkaHttpAsyncHttpService;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
-import software.amazon.awssdk.core.client.builder.ClientAsyncHttpConfiguration;
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.sqs.SQSAsyncClient;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageResponse;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
-import software.amazon.awssdk.utils.AttributeMap;
-
-import java.net.URI;
-
-import static org.junit.Assert.*;
 
 public class TestExample {
 
@@ -30,13 +28,13 @@ public class TestExample {
     SQSRestServer server = SQSRestServerBuilder.withPort(9324).withInterface("localhost").start();
     server.waitUntilStarted();
 
-    try(SdkAsyncHttpClient akkaClient = new AkkaHttpAsyncHttpService().createAsyncHttpClientFactory().createHttpClientWithDefaults(AttributeMap.empty());
+    try(SdkAsyncHttpClient akkaClient = new AkkaHttpAsyncHttpService().createAsyncHttpClientFactory().build();
 
-        SQSAsyncClient client = SQSAsyncClient.builder()
-            .credentialsProvider(StaticCredentialsProvider.create(AwsCredentials.create("x", "x")))
+		  SqsAsyncClient client = SqsAsyncClient.builder()
+            .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("x", "x")))
             .region(Region.of("elasticmq"))
             .endpointOverride(new URI(baseUrl))
-            .asyncHttpConfiguration(ClientAsyncHttpConfiguration.builder().httpClient(akkaClient).build())
+            .httpClient(akkaClient)
             .build()
         ) {
 
