@@ -17,7 +17,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'com.github.matsluni', name: 'aws-spi-akka-http_2.12', version: '0.0.10'
+    testCompile group: 'com.github.matsluni', name: 'aws-spi-akka-http_2.12', version: '0.0.11'
     testCompile group: 'org.elasticmq', name: 'elasticmq-server_2.12', version: '0.13.9'
     testCompile('software.amazon.awssdk:sqs:2.10.7'){
         exclude group: 'software.amazon.awssdk', module: 'netty-nio-client'
